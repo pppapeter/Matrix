@@ -22,27 +22,70 @@
 </html>
 <script type="text/javascript">
 
-    // 百度地图API功能
-    var map = new BMap.Map("allmap");
-    var point = new BMap.Point(116.331398, 39.897445);
-    map.centerAndZoom(point, 12);
+    var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300, 157));
+
+    //创建和初始化地图函数：
+    function initMap() {
+        createMap();//创建地图
+        setMapEvent();//设置地图事件
+        addMapControl();//向地图添加控件
+    }
+
+    //创建地图函数：
+    function createMap() {
+        var map = new BMap.Map("allmap");//在百度地图容器中创建一个地图
+        var point = new BMap.Point(116.395645, 39.929986);//定义一个中心点坐标
+        map.centerAndZoom(point, 12);//设定地图的中心点和坐标并将地图显示在地图容器中
+        window.map = map;//将map变量存储在全局
+    }
+
+    //地图事件设置函数：
+    function setMapEvent() {
+        map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+        map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+        map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+        map.enableKeyboard();//启用键盘上下左右键移动地图
+    }
+
+    //地图控件添加函数：
+    function addMapControl() {
+        //向地图中添加缩放控件
+        var ctrl_nav = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_LARGE });
+        map.addControl(ctrl_nav);
+        //向地图中添加缩略图控件
+        var ctrl_ove = new BMap.OverviewMapControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1 });
+        map.addControl(ctrl_ove);
+        //向地图中添加比例尺控件
+        var ctrl_sca = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_BOTTOM_LEFT });
+        map.addControl(ctrl_sca);
+    }
+
+    initMap();//创建和初始化地图
 
     var geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function (r) {
         if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            var mk = new BMap.Marker(r.point);
+            var mk = new BMap.Marker(r.point, { icon: myIcon });
             map.addOverlay(mk);
-            map.panTo(r.point);
+            //map.panTo(r.point);
+            map.centerAndZoom(r.point, 12);
             //alert('您的位置：'+r.point.lng+','+r.point.lat);
 
             UpdateUserLoc("user1");
-            StartGuide(r.point);
+            //StartGuide(r.point);
         }
         else {
             alert('failed' + this.getStatus());
         }
     }, { enableHighAccuracy: true })
 
+    // 百度地图API功能
+    //var map = new BMap.Map("allmap");
+    
+    //var point = new BMap.Point(116.331398, 39.897445);
+    //map.centerAndZoom(point, 12);
+
+   
     //关于状态码
     //BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
     //BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
@@ -59,52 +102,52 @@
     //var map = new BMap.Map("allmap");
     //map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
 
-    var myP1 = new BMap.Point(116.424374, 39.914668);    //起点
-    var myP2 = new BMap.Point(116.424374, 39.914668);    //终点
+    //var myP1 = new BMap.Point(116.424374, 39.914668);    //起点
+    //var myP2 = new BMap.Point(116.424374, 39.914668);    //终点
 
-    function StartGuide(startPoint) {
+    //function StartGuide(startPoint) {
 
-        myP1 = startPoint;   //起点
+    //    myP1 = startPoint;   //起点
 
-        var driving2 = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true } });    //驾车实例
-        driving2.search(myP1, myP2);    //显示一条公交线路
+    //    var driving2 = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true } });    //驾车实例
+    //    driving2.search(myP1, myP2);    //显示一条公交线路
 
-        setTimeout(function () {
-            run();
-        }, 1500);
-    }
+    //    setTimeout(function () {
+    //        run();
+    //    }, 1500);
+    //}
 
-    window.run = function () {
+    //window.run = function () {
 
-        var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/Mario.png", new BMap.Size(32, 70), {    //小车图片
-            //offset: new BMap.Size(0, -5),    //相当于CSS精灵
-            imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
-        });
+    //    var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/Mario.png", new BMap.Size(32, 70), {    //小车图片
+    //        //offset: new BMap.Size(0, -5),    //相当于CSS精灵
+    //        imageOffset: new BMap.Size(0, 0)    //图片的偏移量。为了是图片底部中心对准坐标点。
+    //    });
 
-        var driving = new BMap.DrivingRoute(map);    //驾车实例
-        driving.search(myP1, myP2);
-        driving.setSearchCompleteCallback(function () {
-            var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
-            var paths = pts.length;    //获得有几个点
+    //    var driving = new BMap.DrivingRoute(map);    //驾车实例
+    //    driving.search(myP1, myP2);
+    //    driving.setSearchCompleteCallback(function () {
+    //        var pts = driving.getResults().getPlan(0).getRoute(0).getPath();    //通过驾车实例，获得一系列点的数组
+    //        var paths = pts.length;    //获得有几个点
 
-            var carMk = new BMap.Marker(pts[0], { icon: myIcon });
-            map.addOverlay(carMk);
-            i = 0;
-            function resetMkPoint(i) {
-                carMk.setPosition(pts[i]);
-                if (i < paths) {
-                    setTimeout(function () {
-                        i++;
-                        resetMkPoint(i);
-                    }, 100);
-                }
-            }
-            setTimeout(function () {
-                resetMkPoint(5);
-            }, 100)
+    //        var carMk = new BMap.Marker(pts[0], { icon: myIcon });
+    //        map.addOverlay(carMk);
+    //        i = 0;
+    //        function resetMkPoint(i) {
+    //            carMk.setPosition(pts[i]);
+    //            if (i < paths) {
+    //                setTimeout(function () {
+    //                    i++;
+    //                    resetMkPoint(i);
+    //                }, 100);
+    //            }
+    //        }
+    //        setTimeout(function () {
+    //            resetMkPoint(5);
+    //        }, 100)
 
-        });
-    }
+    //    });
+    //}
 
 
     function UpdateUserLoc(user) {
@@ -114,19 +157,14 @@
             data: { userid: user },
             success: function (data) {
 
-                if (data.cName != "") {
-                    map = new BMap.Map("allmap");
-                    point = new BMap.Point(parseFloat(data.lon), parseFloat(data.lat));
-                    map.centerAndZoom(point, 15);
-                    var opts = {
-                        width: 200,     // 信息窗口宽度
-                        height: 60,     // 信息窗口高度
-                        title: data.cName, // 信息窗口标题
-                        enableMessage: false, //设置允许信息窗发送短息
-                        message: data.address
+                if (data.pois.length > 0) {
+
+                    for (var i = 0; i < data.pois.length; i++) {
+                        //创建小狐狸
+                        var pt = new BMap.Point(data.pois[i].lon, data.pois[i].lat);
+                        var marker2 = new BMap.Marker(pt, { icon: myIcon });  // 创建标注
+                        map.addOverlay(marker2);
                     }
-                    var infoWindow = new BMap.InfoWindow(data.address, opts);  // 创建信息窗口对象
-                    map.openInfoWindow(infoWindow, point); //开启信息窗口
                 }
             },
             error: function () {
