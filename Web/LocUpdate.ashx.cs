@@ -12,15 +12,32 @@ namespace Maticsoft.Web
     /// </summary>
     public class LocUpdate : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             //string autoid = context.Request.Form["autoid"];
             string userid = context.Request.QueryString["userid"];
-             
+            string userlat = context.Request.QueryString["userlat"];
+            string userlon = context.Request.QueryString["userlon"];
+            string timespan = context.Request.QueryString["timespan"];
+
             // get all poi info
             BLL.user_loc userLoc = new BLL.user_loc();
-            DataSet dsList = userLoc.GetAllList();
+            List<Model.user_loc> listUser = userLoc.GetModelList("userid='" + userid + "'");
+
+            if (listUser.Count > 0)
+            {
+                Model.user_loc mUser = listUser[0];
+                mUser.lon = userlon;
+                mUser.lat = userlat;
+                mUser.systime = DateTime.Now;
+                userLoc.Update(mUser);
+            }
+            else
+            {
+                userLoc.Add(new Model.user_loc { userid = userid, lat = userlat, lon = userlon, systime = DateTime.Now });
+            }
+
+            DataSet dsList = userLoc.GetList("userid <> '" + userid + "'", DateTime.Now, timespan);
             string strList = JsonConvert.SerializeObject(dsList.Tables[0]);
 
             // get pois' count

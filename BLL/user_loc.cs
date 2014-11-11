@@ -103,6 +103,13 @@ namespace Maticsoft.BLL
 		{
 			return dal.GetList(strWhere);
 		}
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetList(string strWhere, DateTime time, string timespan)
+        {
+            return dal.GetList(strWhere, time, timespan);
+        }
 		/// <summary>
 		/// 获得数据列表
 		/// </summary>

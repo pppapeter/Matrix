@@ -44,6 +44,7 @@
 		<asp:BoundField DataField="userid" HeaderText="userid" SortExpression="userid" ItemStyle-HorizontalAlign="Center"  /> 
 		<asp:BoundField DataField="lat" HeaderText="lat" SortExpression="lat" ItemStyle-HorizontalAlign="Center"  /> 
 		<asp:BoundField DataField="lon" HeaderText="lon" SortExpression="lon" ItemStyle-HorizontalAlign="Center"  /> 
+		<asp:BoundField DataField="systime" HeaderText="systime" SortExpression="systime" ItemStyle-HorizontalAlign="Center"  /> 
                             
                             <asp:HyperLinkField HeaderText="详细" ControlStyle-Width="50" DataNavigateUrlFields="autoid" DataNavigateUrlFormatString="Show.aspx?id={0}"
                                 Text="详细"  />

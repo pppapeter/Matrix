@@ -35,6 +35,7 @@ namespace Maticsoft.Web.user_loc
 		this.lbluserid.Text=model.userid;
 		this.lbllat.Text=model.lat;
 		this.lbllon.Text=model.lon;
+		this.lblsystime.Text=model.systime.ToString();
 
 	}
 

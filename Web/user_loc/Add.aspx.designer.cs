@@ -22,6 +22,7 @@ namespace Maticsoft.Web.user_loc {
 		protected global::System.Web.UI.WebControls.TextBox txtuserid;
 		protected global::System.Web.UI.WebControls.TextBox txtlat;
 		protected global::System.Web.UI.WebControls.TextBox txtlon;
+		protected global::System.Web.UI.WebControls.TextBox txtsystime;
 	protected global::System.Web.UI.WebControls.Button btnSave;
 	protected global::System.Web.UI.WebControls.Button btnCancel;
 

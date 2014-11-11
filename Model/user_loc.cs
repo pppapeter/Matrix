@@ -14,6 +14,7 @@ namespace Maticsoft.Model
 		private string _userid;
 		private string _lat;
 		private string _lon;
+		private DateTime? _systime;
 		/// <summary>
 		/// auto_increment
 		/// </summary>
@@ -45,6 +46,14 @@ namespace Maticsoft.Model
 		{
 			set{ _lon=value;}
 			get{return _lon;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public DateTime? systime
+		{
+			set{ _systime=value;}
+			get{return _systime;}
 		}
 		#endregion Model
 

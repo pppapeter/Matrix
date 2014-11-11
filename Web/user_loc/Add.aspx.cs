@@ -36,6 +36,10 @@ namespace Maticsoft.Web.user_loc
 			{
 				strErr+="lon不能为空！\\n";	
 			}
+			if(!PageValidate.IsDateTime(txtsystime.Text))
+			{
+				strErr+="systime格式错误！\\n";	
+			}
 
 			if(strErr!="")
 			{
@@ -45,11 +49,13 @@ namespace Maticsoft.Web.user_loc
 			string userid=this.txtuserid.Text;
 			string lat=this.txtlat.Text;
 			string lon=this.txtlon.Text;
+			DateTime systime=DateTime.Parse(this.txtsystime.Text);
 
 			Maticsoft.Model.user_loc model=new Maticsoft.Model.user_loc();
 			model.userid=userid;
 			model.lat=lat;
 			model.lon=lon;
+			model.systime=systime;
 
 			Maticsoft.BLL.user_loc bll=new Maticsoft.BLL.user_loc();
 			bll.Add(model);

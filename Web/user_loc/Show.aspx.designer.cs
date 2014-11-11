@@ -21,6 +21,7 @@ namespace Maticsoft.Web.user_loc {
 	protected global::System.Web.UI.WebControls.Label lbluserid;
 	protected global::System.Web.UI.WebControls.Label lbllat;
 	protected global::System.Web.UI.WebControls.Label lbllon;
+	protected global::System.Web.UI.WebControls.Label lblsystime;
 
 
        
