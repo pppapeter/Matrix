@@ -22,9 +22,18 @@
 </html>
 <script type="text/javascript">
 
+    var map = new BMap.Map("allmap");//在百度地图容器中创建一个地图
     var userid = prompt('Please input your user id...');
-
     var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(300, 157));
+    var ccp;
+    var friend;
+    var shop;
+    var opts = {
+        width: 250,     // 信息窗口宽度
+        height: 80,     // 信息窗口高度
+        title: "商户信息", // 信息窗口标题
+        enableMessage: true//设置允许信息窗发送短息
+    };
 
     //创建和初始化地图函数：
     function initMap() {
@@ -32,12 +41,13 @@
         setMapEvent();//设置地图事件
         addMapControl();//向地图添加控件
 
+        showShop();
         GetMyLocation();
     }
 
     //创建地图函数：
     function createMap() {
-        var map = new BMap.Map("allmap");//在百度地图容器中创建一个地图
+        //var map = new BMap.Map("allmap");//在百度地图容器中创建一个地图
         var point = new BMap.Point(116.395645, 39.929986);//定义一个中心点坐标
         map.centerAndZoom(point, 12);//设定地图的中心点和坐标并将地图显示在地图容器中
         window.map = map;//将map变量存储在全局
@@ -64,20 +74,44 @@
         map.addControl(ctrl_sca);
     }
 
+    function showShop() {
+        //var pt = new BMap.Point(116.404, 39.915);
+        //var myIcon = new BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new BMap.Size(150, 150));
+        //var marker = new BMap.Marker(pt, { icon: myIcon });  // 创建标注
+
+        GetShopLoc();
+
+        //shop = new BMap.Marker(116.461157, 39.943883);  // 创建标注
+        //var content = "this is a test";
+        //map.addOverlay(shop);               // 将标注添加到地图中
+        //addClickHandler(content, marker);
+    }
+
+    function addClickHandler(content, shop) {
+        shop.addEventListener("click", function (e) {
+            openInfo(content, e)
+        }
+		);
+    }
+
+    function openInfo(content, e) {
+        var p = e.target;
+        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+        var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象 
+        map.openInfoWindow(infoWindow, point); //开启信息窗口
+    }
+
     function GetMyLocation() {
-
-        map.clearOverlays();
-
         var geolocation = new BMap.Geolocation();
         geolocation.getCurrentPosition(function (r) {
             if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                var mk = new BMap.Marker(r.point, { icon: myIcon });
-                map.addOverlay(mk);
+                ccp = new BMap.Marker(r.point, { icon: myIcon });
+                map.addOverlay(ccp);
                 //map.panTo(r.point);
                 //map.centerAndZoom(r.point, 12); //
                 //alert('您的位置：'+r.point.lng+','+r.point.lat);
 
-                UpdateUserLoc(userid, r.point.lat, r.point.lng, 300);
+                UpdateUserLoc(userid, r.point.lat, r.point.lng, 60);
                 //StartGuide(r.point);
             }
             else {
@@ -103,8 +137,8 @@
                     for (var i = 0; i < data.pois.length; i++) {
                         //创建小狐狸
                         var pt = new BMap.Point(data.pois[i].lon, data.pois[i].lat);
-                        var marker2 = new BMap.Marker(pt, { icon: myIcon });  // 创建标注
-                        map.addOverlay(marker2);
+                        friend = new BMap.Marker(pt, { icon: myIcon });  // 创建标注
+                        map.addOverlay(friend);
                     }
                 }
             },
@@ -115,9 +149,47 @@
         });
     }
 
+    function GetShopLoc(user, lat, lon, timespan) {
+        $.ajax({
+            type: 'get',
+            url: 'GetShopList.ashx',
+            data: {
+                userid: user,
+                userlat: lat,
+                userlon: lon,
+                timespan: timespan
+            },
+            success: function (data) {
+
+                if (data.pois.length > 0) {
+                    for (var i = 0; i < data.pois.length; i++) {
+                        //shop = new BMap.Maker(new BMap.Point(data.pois[i].lon, data.pois[i].lat));  // 创建标注
+                        //var content = data.pois[i].name;
+                        //map.addOverlay(shop);               // 将标注添加到地图中
+                        //addClickHandler(content, shop);
+                        var marker = new BMap.Marker(new BMap.Point(data.pois[i].lon, data.pois[i].lat));  // 创建标注
+                        var content = data.pois[i].name;
+                        map.addOverlay(marker);               // 将标注添加到地图中
+                        addClickHandler(content, marker);
+                    }
+                }
+            },
+            error: function () {
+                alert("Get shop location Error!");
+            },
+            dataType: "json"
+        });
+    }
+
+    function refreshLoc() {
+        map.removeOverlay(ccp);
+        map.removeOverlay(friend);
+        GetMyLocation();
+    }
+
     initMap();//创建和初始化地图
 
-    var fun = self.setInterval("GetMyLocation()", 10000)
+    var fun = self.setInterval("refreshLoc()", 10000)
 
-    
+
 </script>

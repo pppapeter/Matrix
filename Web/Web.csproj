@@ -73,8 +73,9 @@
     <Content Include="Controls\checkright.ascx" />
     <Content Include="Controls\copyright.ascx" />
     <Content Include="Global.asax" />
-    <Content Include="Images\top1.gif" />
+    <Content Include="Images\starbucks.jpg" />
     <Content Include="MatrixMap.html" />
+    <Content Include="GetShopList.ashx" />
     <None Include="Properties\PublishProfiles\Matrix.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
@@ -105,6 +106,9 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetShopList.ashx.cs">
+      <DependentUpon>GetShopList.ashx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
