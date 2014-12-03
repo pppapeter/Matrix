@@ -73,7 +73,11 @@
     <Content Include="Controls\checkright.ascx" />
     <Content Include="Controls\copyright.ascx" />
     <Content Include="Global.asax" />
-    <Content Include="Images\starbucks.jpg" />
+    <Content Include="Images\starbucks.png" />
+    <Content Include="Images\starbucks50.png" />
+    <Content Include="Images\starbucks50user.png" />
+    <Content Include="Images\user1.png" />
+    <Content Include="Images\user2.png" />
     <Content Include="MatrixMap.html" />
     <Content Include="GetShopList.ashx" />
     <None Include="Properties\PublishProfiles\Matrix.pubxml" />
